@@ -5,10 +5,17 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float speed;
+    public bool right;
+    public bool left;
 
     // Start is called before the first frame update
     void Start()
     {
+        if(left)
+        {
+            transform.Rotate(Vector3.left * 180);
+        }
+        
         
     }
 
@@ -16,7 +23,30 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         transform.Translate(Vector3.right * speed);
-        transform.Rotate(Vector3.forward);
+        
+        
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        
+        DirectionalNode dn = other.GetComponent<DirectionalNode>();
+        Debug.Log(dn.current);
+
+        float rot = 0;
+        Vector3 dir = Vector3.zero;
+        if(dn.current == "right")
+        {
+            dir = Vector3.back;
+            rot = 90;
+        }
+        else if(dn.current == "left")
+        {
+            dir = Vector3.forward;
+            rot = 90;
+        }
+
+        transform.Rotate(dir, rot);
         
     }
 }
